@@ -3,413 +3,379 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Self-Reconfiguring Robot Simulation | Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Self-Reconfiguring Modular Robots | Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
-        <div class="container">
-            <a href="#" class="logo">RoboSim<span>Portfolio</span></a>
-            <ul class="nav-links">
+        <div class="nav-container">
+            <a href="#" class="logo">ModBot<span>LAB</span></a>
+            <ul class="nav-menu">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#abstract">Abstract</a></li>
-                <li><a href="#project">Project</a></li>
-                <li><a href="#algorithms">Algorithms</a></li>
-                <li><a href="#team">Team</a></li>
+                <li><a href="#problem">Problem</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#applications">Applications</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#conclusion">Conclusion</a></li>
             </ul>
-            <button class="menu-toggle">
+            <button class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
+    <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
-                <h1 class="hero-title">Self-Reconfiguring<br>Modular Robot Simulation</h1>
-                <p class="hero-subtitle">Advanced Python-based simulation demonstrating autonomous shape transformation and adaptive robotics</p>
-                <div class="hero-info">
-                    <p><strong>Project Lead:</strong> Srushti G Joshi (01fe24bar014)</p>
-                    <p><strong>Academic Project:</strong>Object Oriented Programming for Automation</p>
-                    <p><strong>Technology Stack:</strong> Python, Tkinter, OOP, Algorithms</p>
-                </div>
-                <a href="#project" class="btn btn-primary">Explore Project</a>
-                <a href="#abstract" class="btn btn-secondary">View Abstract</a>
-            </div>
-            <div class="hero-visual">
-                <div class="code-preview">
-                    <div class="code-header">
-                        <div class="code-dots">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                        </div>
-                        <span class="code-title">robot_simulation.py</span>
+                <h4 class="hero-subtitle">Project Portfolio</h4>
+                <h1 class="hero-title">Self-Reconfiguring<br><span>Modular Robots</span></h1>
+                <p class="hero-description">A Simulation-Based Approach to Autonomous Robotic Reconfiguration</p>
+                
+                <div class="author-info">
+                    <div class="author-main">
+                        <h3>Author</h3>
+                        <p class="author-name">Srushti G Joshi</p>
+                        <p class="author-id">01fe24bar014</p>
                     </div>
-                    <pre><code>class ModularRobot:
-    def __init__(self, num_modules=9):
-        self.modules = []
-        self.num_modules = num_modules
-        self.algorithm = "sequential"
-        
-    def reconfigure_to_shape(self, shape_name):
-        """Reconfigures robot to specified shape"""
-        targets = self.get_target_positions(shape_name)
-        return self.animate_movement(targets)
-        
-    def get_target_positions(self, shape_name):
-        if shape_name == "Line":
-            return [(i, 0) for i in range(self.num_modules)]
-        elif shape_name == "Square":
-            side = ceil(sqrt(self.num_modules))
-            positions = []
-            idx = 0
-            for y in range(side):
-                for x in range(side):
-                    if idx < self.num_modules:
-                        positions.append((x, y))
-                        idx += 1
-            return positions</code></pre>
+                    
+                    <div class="team-members">
+                        <h3>Team Members</h3>
+                        <ul>
+                            <li>M Shreya (01fe24bar006)</li>
+                            <li>Ananya P Kumtakar (01fe24bar009)</li>
+                            <li>Somavva C Gunjaj (01fe24bar012)</li>
+                            <li>Nisha N Gowda (01fe24bar016)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="robot-visual">
+                    <div class="grid-container" id="heroGrid">
+                        <!-- Grid will be populated by JavaScript -->
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Abstract Section -->
-    <section id="abstract" class="abstract">
+    <section class="section abstract-section" id="abstract">
         <div class="container">
-            <h2 class="section-title">Project Abstract</h2>
+            <div class="section-header">
+                <div class="section-number">01</div>
+                <h2 class="section-title">Abstract</h2>
+            </div>
+            
             <div class="abstract-content">
-                <div class="abstract-text">
-                    <h3>Concept Overview</h3>
-                    <p>This project simulates self-reconfiguring modular robots that can autonomously change their shape to adapt to different tasks and environments. Built using Python and Tkinter, the simulation demonstrates various reconfiguration algorithms and shape transformations.</p>
+                <p class="abstract-text">
+                    This project presents a modular robot self-reconfiguration simulation that demonstrates 
+                    autonomous shape transformation. The system models a collection of robotic modules that 
+                    can dynamically rearrange themselves into various configurations including lines, 
+                    rectangles, and squares.
+                </p>
+                
+                <div class="abstract-points">
+                    <div class="point">
+                        <div class="point-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>Objective</h3>
+                        <p>Develop a visual simulation demonstrating how modular robots autonomously reconfigure their physical structure.</p>
+                    </div>
                     
-                    <div class="concept-details">
-                        <div class="detail-card">
-                            <i class="fas fa-cube"></i>
-                            <h4>Modular Design</h4>
-                            <p>Each module is an independent unit with processing, sensing, and connection capabilities</p>
+                    <div class="point">
+                        <div class="point-icon">
+                            <i class="fas fa-route"></i>
                         </div>
-                        <div class="detail-card">
-                            <i class="fas fa-sync-alt"></i>
-                            <h4>Self-Reconfiguration</h4>
-                            <p>Modules autonomously change positions to achieve target shapes without external intervention</p>
+                        <h3>Approach</h3>
+                        <p>Implement a grid-based system where individual robotic modules coordinate movement to form predefined geometric shapes.</p>
+                    </div>
+                    
+                    <div class="point">
+                        <div class="point-icon">
+                            <i class="fas fa-code"></i>
                         </div>
-                        <div class="detail-card">
+                        <h3>Implementation</h3>
+                        <p>Built using Python with Tkinter for real-time visualization, featuring smooth step-by-step animation of module transitions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Statement Section -->
+    <section class="section problem-section" id="problem">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">02</div>
+                <h2 class="section-title">Problem Statement</h2>
+            </div>
+            
+            <div class="problem-content">
+                <div class="problem-main">
+                    <h3 class="problem-challenge">The Core Challenge</h3>
+                    <p class="problem-text">
+                        How can a group of identical robotic modules autonomously coordinate their movements 
+                        to transform from one geometric configuration to another, while ensuring smooth 
+                        transitions, collision avoidance, and optimal path planning?
+                    </p>
+                </div>
+                
+                <div class="problem-cards">
+                    <div class="problem-card">
+                        <div class="problem-card-icon">
                             <i class="fas fa-robot"></i>
-                            <h4>Adaptive Behavior</h4>
-                            <p>The system adapts to different tasks by transforming into optimal configurations</p>
                         </div>
+                        <h4>Static Robot Limitations</h4>
+                        <p>Traditional robots are designed for specific tasks and cannot physically adapt to new requirements or environments.</p>
                     </div>
-                </div>
-                
-                <div class="applications">
-                    <h3>Applications & Uses</h3>
-                    <div class="app-grid">
-                        <div class="app-card">
-                            <h4><i class="fas fa-search"></i> Search & Rescue</h4>
-                            <p>Transform to navigate through rubble, form bridges, or create support structures in disaster scenarios</p>
-                        </div>
-                        <div class="app-card">
-                            <h4><i class="fas fa-space-shuttle"></i> Space Exploration</h4>
-                            <p>Adapt to unknown terrains, form tools as needed, and repair structures autonomously</p>
-                        </div>
-                        <div class="app-card">
-                            <h4><i class="fas fa-medkit"></i> Medical Applications</h4>
-                            <p>Minimally invasive surgery, targeted drug delivery, and adaptive medical devices</p>
-                        </div>
-                        <div class="app-card">
-                            <h4><i class="fas fa-industry"></i> Industrial Automation</h4>
-                            <p>Reconfigurable manufacturing systems, adaptive assembly lines, and multi-purpose robots</p>
-                        </div>
-                        <div class="app-card">
-                            <h4><i class="fas fa-graduation-cap"></i> Education & Research</h4>
-                            <p>Teaching robotics concepts, algorithm development, and swarm intelligence research</p>
-                        </div>
-                        <div class="app-card">
-                            <h4><i class="fas fa-home"></i> Smart Environments</h4>
-                            <p>Adaptive furniture, reconfigurable infrastructure, and responsive architectural elements</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Project Details -->
-    <section id="project" class="project-details">
-        <div class="container">
-            <h2 class="section-title">Project Implementation</h2>
-            
-            <div class="modules-section">
-                <h3>Modules Used in Program</h3>
-                <div class="modules-grid">
-                    <div class="module-card">
-                        <h4><i class="fab fa-python"></i> tkinter</h4>
-                        <p>Graphical User Interface creation, window management, and widget implementation</p>
-                        <code>import tkinter as tk</code>
-                    </div>
-                    <div class="module-card">
-                        <h4><i class="fas fa-calculator"></i> math</h4>
-                        <p>Mathematical calculations for shape transformations, distance computations, and geometric operations</p>
-                        <code>import math</code>
-                    </div>
-                    <div class="module-card">
-                        <h4><i class="fas fa-random"></i> random</h4>
-                        <p>Random module placement, algorithm variations, and stochastic reconfiguration</p>
-                        <code>import random</code>
-                    </div>
-                    <div class="module-card">
-                        <h4><i class="fas fa-file-export"></i> json</h4>
-                        <p>Configuration saving/loading, data serialization, and state persistence</p>
-                        <code>import json</code>
-                    </div>
-                    <div class="module-card">
-                        <h4><i class="fas fa-clock"></i> datetime</h4>
-                        <p>Timestamp generation for configuration history and performance tracking</p>
-                        <code>from datetime import datetime</code>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="critical-thinking">
-                <h3>Critical Thinking & Problem Solving</h3>
-                <div class="thinking-grid">
-                    <div class="thinking-card">
-                        <h4>Algorithm Optimization</h4>
-                        <p>Developed efficient pathfinding algorithms minimizing movement steps and energy consumption during reconfiguration</p>
-                    </div>
-                    <div class="thinking-card">
-                        <h4>Collision Avoidance</h4>
-                        <p>Implemented strategies to prevent module collisions during transformation while maintaining connectivity</p>
-                    </div>
-                    <div class="thinking-card">
-                        <h4>Scalability Design</h4>
-                        <p>Created architecture supporting variable module counts (4-20+) without performance degradation</p>
-                    </div>
-                    <div class="thinking-card">
-                        <h4>User Experience</h4>
-                        <p>Designed intuitive GUI with real-time feedback, progress indicators, and comprehensive controls</p>
-                    </div>
-                    <div class="thinking-card">
-                        <h4>Error Handling</h4>
-                        <p>Implemented robust error handling for edge cases like disconnected modules and invalid configurations</p>
-                    </div>
-                    <div class="thinking-card">
-                        <h4>Performance Metrics</h4>
-                        <p>Developed tracking system for reconfiguration speed, accuracy, and resource utilization</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Algorithms Section -->
-    <section id="algorithms" class="algorithms">
-        <div class="container">
-            <h2 class="section-title">Algorithms & Methodologies</h2>
-            
-            <div class="algorithm-types">
-                <div class="algorithm-card">
-                    <div class="algo-header">
-                        <i class="fas fa-sort-amount-down"></i>
-                        <h3>Sequential Algorithm</h3>
-                    </div>
-                    <div class="algo-content">
-                        <h4>How it works:</h4>
-                        <p>Modules move one at a time in a predetermined sequence. Each module completes its movement before the next begins.</p>
-                        <h4>Advantages:</h4>
-                        <ul>
-                            <li>Simple to implement and debug</li>
-                            <li>Predictable movement patterns</li>
-                            <li>Easy collision avoidance</li>
-                        </ul>
-                        <h4>Disadvantages:</h4>
-                        <ul>
-                            <li>Slower reconfiguration time</li>
-                            <li>Inefficient for large systems</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="algorithm-card">
-                    <div class="algo-header">
-                        <i class="fas fa-expand-arrows-alt"></i>
-                        <h3>Parallel Algorithm</h3>
-                    </div>
-                    <div class="algo-content">
-                        <h4>How it works:</h4>
-                        <p>Multiple modules move simultaneously toward their targets. Movement occurs in synchronized phases.</p>
-                        <h4>Advantages:</h4>
-                        <ul>
-                            <li>Faster reconfiguration</li>
-                            <li>Efficient resource utilization</li>
-                            <li>Better for time-critical applications</li>
-                        </ul>
-                        <h4>Disadvantages:</h4>
-                        <ul>
-                            <li>Complex collision detection required</li>
-                            <li>Higher coordination overhead</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="algorithm-card">
-                    <div class="algo-header">
-                        <i class="fas fa-random"></i>
-                        <h3>Random Algorithm</h3>
-                    </div>
-                    <div class="algo-content">
-                        <h4>How it works:</h4>
-                        <p>Modules are randomly assigned to target positions and move using stochastic methods.</p>
-                        <h4>Advantages:</h4>
-                        <ul>
-                            <li>Good for exploration tasks</li>
-                            <li>Simple implementation</li>
-                            <li>No global coordination needed</li>
-                        </ul>
-                        <h4>Disadvantages:</h4>
-                        <ul>
-                            <li>Unpredictable completion time</li>
-                            <li>Potential for inefficiency</li>
-                            <li>May not find optimal paths</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="shape-algorithms">
-                <h3>Shape Transformation Methods</h3>
-                <div class="shape-algo-grid">
-                    <div class="shape-algo">
-                        <h4>Coordinate Calculation</h4>
-                        <pre><code>def calculate_positions(shape, num_modules):
-    if shape == "line":
-        return [(i, 0) for i in range(num_modules)]
-    elif shape == "square":
-        side = int(math.ceil(math.sqrt(num_modules)))
-        positions = []
-        idx = 0
-        for y in range(side):
-            for x in range(side):
-                if idx < num_modules:
-                    positions.append((x, y))
-                    idx += 1
-        return positions</code></pre>
-                    </div>
-                    <div class="shape-algo">
-                        <h4>Movement Logic</h4>
-                        <pre><code>def move_modules(modules, targets):
-    for i, module in enumerate(modules):
-        if i < len(targets):
-            target_x, target_y = targets[i]
-            # Move X then Y
-            while module.x != target_x:
-                module.x += 1 if module.x < target_x else -1
-            while module.y != target_y:
-                module.y += 1 if module.y < target_y else -1</code></pre>
-                    </div>
-                    <div class="shape-algo">
-                        <h4>Animation Controller</h4>
-                        <pre><code>def animate_reconfiguration():
-    steps = 0
-    while not all_modules_at_target():
-        for module in robot.modules:
-            move_toward_target(module)
-        update_display()
-        steps += 1
-    return steps  # Total steps taken</code></pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Team Section -->
-    <section id="team" class="team">
-        <div class="container">
-            <h2 class="section-title">Project Team</h2>
-            <p class="section-subtitle">Meet the talented developers behind this innovative robotics simulation</p>
-            
-            <div class="team-grid">
-                <div class="team-card team-lead">
-                    <div class="team-img">
-                        <div class="initials">SGJ</div>
-                    </div>
-                    <h3>Srushti G Joshi</h3>
-                    <p class="team-role">Project Lead & Author</p>
-                    <p class="team-id">01fe24bar014</p>
-                    <p class="team-desc">Designed system architecture, implemented core algorithms, and coordinated the entire project development.</p>
-                    <div class="team-skills">
-                        <span>System Design</span>
-                        <span>Python</span>
-                        <span>Algorithms</span>
-                        <span>Project Management</span>
-                    </div>
-                </div>
-                
-                <div class="team-card">
-                    <div class="team-img">
-                        <div class="initials">MS</div>
-                    </div>
-                    <h3>M Shreya</h3>
-                    <p class="team-id">01fe24bar006</p>
-                   
-                </div>
-                
-                <div class="team-card">
-                    <div class="team-img">
-                        <div class="initials">NNG</div>
-                    </div>
-                    <h3>Nisha N Gowda</h3>
-                   
-                    <p class="team-id">01fe24bar016</p>
-                </div>
-                
-                <div class="team-card">
-                    <div class="team-img">
-                        <div class="initials">APK</div>
-                    </div>
-                    <h3>Ananya P Kumtakar</h3>
                     
-                    <p class="team-id">01fe24bar009</p>
-                   
+                    <div class="problem-card">
+                        <div class="problem-card-icon">
+                            <i class="fas fa-mountain"></i>
+                        </div>
+                        <h4>Environmental Constraints</h4>
+                        <p>Fixed-form robots struggle in unpredictable terrains, narrow passages, or situations requiring shape flexibility.</p>
+                    </div>
+                    
+                    <div class="problem-card">
+                        <div class="problem-card-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <h4>Coordination Complexity</h4>
+                        <p>Orchestrating multiple robotic units to move in harmony without collisions requires sophisticated algorithms.</p>
+                    </div>
+                    
+                    <div class="problem-card">
+                        <div class="problem-card-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4>Real-Time Adaptation</h4>
+                        <p>Need for instant reconfiguration in dynamic scenarios like disaster response or space exploration.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Architecture Section -->
+    <section class="section architecture-section" id="architecture">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">03</div>
+                <h2 class="section-title">System Architecture</h2>
+            </div>
+            
+            <div class="architecture-content">
+                <div class="architecture-diagram">
+                    <div class="architecture-layer">
+                        <div class="layer-header">
+                            <i class="fas fa-cube"></i>
+                            <h4>Module Class</h4>
+                        </div>
+                        <p class="layer-description">Individual robotic unit with position (x, y), unique ID, and visual properties</p>
+                        <pre><code class="code-block">class Module:
+    def __init__(self, id, x, y):
+        self.id = module_id
+        self.x = x
+        self.y = y</code></pre>
+                    </div>
+                    
+                    <div class="architecture-layer">
+                        <div class="layer-header">
+                            <i class="fas fa-brain"></i>
+                            <h4>ModularRobot Class</h4>
+                        </div>
+                        <p class="layer-description">Robot controller managing multiple modules and target shape calculations</p>
+                        <pre><code class="code-block">class ModularRobot:
+    def get_target_positions(self, shape):
+        # Calculate coordinates for
+        # Line, Square, Rectangle</code></pre>
+                    </div>
+                    
+                    <div class="architecture-layer">
+                        <div class="layer-header">
+                            <i class="fas fa-desktop"></i>
+                            <h4>GUI Layer</h4>
+                        </div>
+                        <p class="layer-description">Tkinter-based visual interface with canvas drawing and control buttons</p>
+                        <pre><code class="code-block">self.canvas = tk.Canvas(...)
+def draw_modules(self):
+    for mod in self.robot.modules:
+        canvas.create_rectangle(...)</code></pre>
+                    </div>
+                    
+                    <div class="architecture-layer">
+                        <div class="layer-header">
+                            <i class="fas fa-film"></i>
+                            <h4>Animation Engine</h4>
+                        </div>
+                        <p class="layer-description">Step-by-step movement animation with 100ms intervals for smooth transitions</p>
+                        <pre><code class="code-block">def animate_step(self):
+    # Move each module toward target
+    self.root.after(100, self.animate_step)</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Applications Section -->
+    <section class="section applications-section" id="applications">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">04</div>
+                <h2 class="section-title">Real-World Applications</h2>
+                <p class="section-subtitle">From outer space to inside the human body, self-reconfiguring robots are transforming industries.</p>
+            </div>
+            
+            <div class="applications-grid">
+                <div class="application-card">
+                    <div class="app-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Space Exploration</h3>
+                    <p>Robots that can reshape to traverse diverse planetary terrains, enter narrow crevices, or reconfigure as solar panels for energy collection.</p>
                 </div>
                 
-                <div class="team-card">
-                    <div class="team-img">
-                        <div class="initials">SCG</div>
+                <div class="application-card">
+                    <div class="app-icon">
+                        <i class="fas fa-heartbeat"></i>
                     </div>
-                    <h3>Somavva C Gunjal</h3>
+                    <h3>Medical Robotics</h3>
+                    <p>Micro-scale modular robots for targeted drug delivery, minimally invasive surgery, and navigating through blood vessels.</p>
+                </div>
+                
+                <div class="application-card">
+                    <div class="app-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Search & Rescue</h3>
+                    <p>Robots that flatten to slide under debris, form bridges over gaps, or create lifting structures in disaster scenarios.</p>
+                </div>
+                
+                <div class="application-card">
+                    <div class="app-icon">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <h3>Industrial Automation</h3>
+                    <p>Adaptive manufacturing systems where robots reconfigure to handle different product sizes and assembly requirements.</p>
+                </div>
+                
+                <div class="application-card">
+                    <div class="app-icon">
+                        <i class="fas fa-hard-hat"></i>
+                    </div>
+                    <h3>Construction</h3>
+                    <p>Self-assembling structures where modular units collaborate to build scaffolding, temporary supports, or inspection platforms.</p>
+                </div>
+                
+                <div class="application-card">
+                    <div class="app-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>Scientific Research</h3>
+                    <p>Reconfigurable sensor networks for environmental monitoring, deep-sea exploration, and hazardous material handling.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Demo Section -->
+    <section class="section demo-section" id="demo">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">05</div>
+                <h2 class="section-title">Live Demo</h2>
+                <p class="section-subtitle">Click the buttons below to see the modules reconfigure in real-time</p>
+            </div>
+            
+            <div class="demo-content">
+                <div class="demo-controls">
+                    <div class="demo-status">
+                        <div class="status-label">Ready</div>
+                        <div class="status-indicator" id="statusIndicator"></div>
+                    </div>
                     
-                    <p class="team-id">01fe24bar012</p>
-                   
+                    <div class="demo-buttons">
+                        <button class="demo-btn" id="btnLine">
+                            <i class="fas fa-grip-lines"></i>
+                            Line Formation
+                        </button>
+                        <button class="demo-btn" id="btnSquare">
+                            <i class="fas fa-square"></i>
+                            Square Formation
+                        </button>
+                        <button class="demo-btn" id="btnRectangle">
+                            <i class="fas fa-rectangle-landscape"></i>
+                            Rectangle Formation
+                        </button>
+                        <button class="demo-btn" id="btnReset">
+                            <i class="fas fa-undo"></i>
+                            Reset
+                        </button>
+                    </div>
+                    
+                    <div class="module-count">
+                        <h4>Module IDs</h4>
+                        <div class="module-tags" id="moduleTags">
+                            <!-- Module tags will be generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-visualization">
+                    <div class="demo-grid" id="demoGrid">
+                        <!-- Grid will be populated by JavaScript -->
+                    </div>
+                    <div class="demo-instructions">
+                        <p><i class="fas fa-info-circle"></i> Each colored square represents a robotic module. Watch them move to form different shapes!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion Section -->
+    <section class="section conclusion-section" id="conclusion">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">06</div>
+                <h2 class="section-title">Conclusion</h2>
+            </div>
+            
+            <div class="conclusion-content">
+                <div class="achievements">
+                    <h3>Key Achievements</h3>
+                    <ul class="achievements-list">
+                        <li><i class="fas fa-check-circle"></i> Successfully simulated modular robot reconfiguration</li>
+                        <li><i class="fas fa-check-circle"></i> Implemented smooth step-by-step animation system</li>
+                        <li><i class="fas fa-check-circle"></i> Demonstrated three distinct configuration patterns</li>
+                        <li><i class="fas fa-check-circle"></i> Created intuitive visual interface for demonstration</li>
+                    </ul>
+                </div>
+                
+                <div class="future">
+                    <h3>Future Enhancements</h3>
+                    <ul class="future-list">
+                        <li><i class="fas fa-arrow-circle-right"></i> Collision detection & avoidance algorithms</li>
+                        <li><i class="fas fa-arrow-circle-right"></i> Optimal path planning using A* or similar</li>
+                        <li><i class="fas fa-arrow-circle-right"></i> 3D visualization and additional shapes</li>
+                        <li><i class="fas fa-arrow-circle-right"></i> Distributed decision-making simulation</li>
+                    </ul>
                 </div>
             </div>
             
-            <div class="team-collaboration">
-                <h3>Collaboration & Contributions</h3>
-                <div class="collab-details">
-                    <div class="collab-item">
-                        <i class="fas fa-code-branch"></i>
-                        <h4>Version Control</h4>
-                        <p>Used Git for collaborative development with regular code reviews and integration</p>
-                    </div>
-                    <div class="collab-item">
-                        <i class="fas fa-tasks"></i>
-                        <h4>Agile Methodology</h4>
-                        <p>Implemented Scrum with weekly sprints, standups, and progress tracking</p>
-                    </div>
-                    <div class="collab-item">
-                        <i class="fas fa-brain"></i>
-                        <h4>Brainstorming Sessions</h4>
-                        <p>Regular meetings for algorithm optimization and feature enhancement discussions</p>
-                    </div>
-                </div>
+            <div class="thank-you">
+                <h2>Thank You!</h2>
+                <p>Questions & Discussion Welcome</p>
             </div>
         </div>
     </section>
@@ -419,36 +385,14 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <h3>Self-Reconfiguring Robot Simulation</h3>
-                    <p>Academic Project | Computer Science & Engineering</p>
-                    <p>Demonstrating modular robotics, autonomous systems, and adaptive algorithms</p>
+                    <h3>Self-Reconfiguring Modular Robots</h3>
+                    <p>A Simulation-Based Approach</p>
                 </div>
-                
-                <div class="footer-team">
-                    <h4>Project Team</h4>
-                    <p>Srushti G Joshi (01fe24bar014) - Lead</p>
-                    <p>M Shreya (01fe24bar006)</p>
-                    <p>Nisha N Gowda (01fe24bar016)</p>
-                    <p>Ananya P Kumtakar (01fe24bar009)</p>
-                    <p>Somavva C Gunjal (01fe24bar012)</p>
+                <div class="footer-info">
+                    <p>Project Portfolio | Computer Science & Engineering</p>
+                    <p>Simulation built with HTML, CSS & JavaScript</p>
+                    <p class="footer-copyright">© 2025 ModBot Lab. All content for educational demonstration.</p>
                 </div>
-                
-                <div class="footer-tech">
-                    <h4>Technologies</h4>
-                    <div class="tech-tags">
-                        <span>Python</span>
-                        <span>Tkinter</span>
-                        <span>OOP</span>
-                        <span>Algorithms</span>
-                        <span>Mathematics</span>
-                        <span>GUI Design</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2024 Self-Reconfiguring Robot Simulation Project. All rights reserved.</p>
-                <p>Academic Project for Educational Purposes</p>
             </div>
         </div>
     </footer>
