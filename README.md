@@ -26,6 +26,6 @@ This portfolio showcases a Python-based simulation of self-reconfiguring modular
 - **Google Fonts** - Typography
 
 ## 🚀 Live Demo
-Visit: [https://your-username.github.io/robotics-portfolio/](https://srushtigjoshi.github.io/oopsSem3.git.io/)
+Visit: [(https://srushtigjoshi.github.io/oopsSem3.git.io/)](https://srushtigjoshi.github.io/oopsSem3.git.io/)
 
 ## 📁 Project Structure
