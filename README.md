@@ -6,10 +6,10 @@ This portfolio showcases a Python-based simulation of self-reconfiguring modular
 
 ## 👥 Team Members
 - **Srushti G Joshi** (01fe24bar014) - Project Lead & Author
-- **M Shreya** (01fe24bar006) - Algorithm Developer
-- **Nisha N Gowda** (01fe24bar016) - GUI Developer
-- **Ananya P Kumtakar** (01fe24bar009) - Testing & Documentation
-- **Somavva C Gunjal** (01fe24bar012) - Feature Developer
+- **M Shreya** (01fe24bar006) 
+- **Nisha N Gowda** (01fe24bar016) 
+- **Ananya P Kumtakar** (01fe24bar009) 
+- **Somavva C Gunjal** (01fe24bar012)
 
 ## 🎯 Features
 - Interactive portfolio with smooth animations
@@ -26,6 +26,6 @@ This portfolio showcases a Python-based simulation of self-reconfiguring modular
 - **Google Fonts** - Typography
 
 ## 🚀 Live Demo
-Visit: [https://your-username.github.io/robotics-portfolio/](https://your-username.github.io/robotics-portfolio/)
+Visit: [https://your-username.github.io/robotics-portfolio/](https://srushtigjoshi.github.io/oopsSem3.git.io/)
 
 ## 📁 Project Structure
