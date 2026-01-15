@@ -1,660 +1,406 @@
-// ==============================================
-// Self-Reconfiguring Robot Simulation Portfolio
-// Team: Srushti G Joshi (Lead), M Shreya, Nisha N Gowda, 
-//       Ananya P Kumtakar, Somavva C Gunjal
-// ==============================================
-
+// Main application for Self-Reconfiguring Modular Robots simulation
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Portfolio loaded successfully! 🚀');
-    
-    // ========== MOBILE NAVIGATION ==========
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.querySelector('.nav-menu');
     
     if (menuToggle) {
         menuToggle.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-            menuToggle.innerHTML = navLinks.classList.contains('active') 
+            navMenu.classList.toggle('active');
+            menuToggle.innerHTML = navMenu.classList.contains('active') 
                 ? '<i class="fas fa-times"></i>' 
                 : '<i class="fas fa-bars"></i>';
         });
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!menuToggle.contains(event.target) && !navLinks.contains(event.target)) {
-                navLinks.classList.remove('active');
-                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            }
-        });
     }
     
-    // ========== SMOOTH SCROLLING ==========
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        });
+    });
+    
+    // Module class definition
+    class Module {
+        constructor(id, x, y) {
+            this.id = id;
+            this.x = x;
+            this.y = y;
+            this.color = this.getModuleColor(id);
+            this.targetX = x;
+            this.targetY = y;
+            this.isMoving = false;
+        }
+        
+        getModuleColor(id) {
+            const colors = [
+                '#2563eb', '#10b981', '#8b5cf6', 
+                '#f59e0b', '#ef4444', '#0ea5e9',
+                '#84cc16', '#f97316', '#a855f7'
+            ];
+            return colors[id % colors.length];
+        }
+        
+        moveTo(targetX, targetY) {
+            this.targetX = targetX;
+            this.targetY = targetY;
+            this.isMoving = true;
+        }
+        
+        updatePosition() {
+            if (!this.isMoving) return false;
+            
+            const dx = this.targetX - this.x;
+            const dy = this.targetY - this.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < 0.1) {
+                this.x = this.targetX;
+                this.y = this.targetY;
+                this.isMoving = false;
+                return false;
+            }
+            
+            // Move a fraction of the distance
+            this.x += dx * 0.3;
+            this.y += dy * 0.3;
+            
+            return true;
+        }
+    }
+    
+    // ModularRobot class definition
+    class ModularRobot {
+        constructor(numModules = 9) {
+            this.modules = [];
+            this.numModules = numModules;
+            this.gridSize = 6; // 6x6 grid for demo
+            this.initializeModules();
+        }
+        
+        initializeModules() {
+            // Start with a random configuration
+            const positions = [];
+            for (let i = 0; i < this.numModules; i++) {
+                let x, y;
+                do {
+                    x = Math.floor(Math.random() * this.gridSize);
+                    y = Math.floor(Math.random() * this.gridSize);
+                } while (positions.some(pos => pos.x === x && pos.y === y));
+                
+                positions.push({x, y});
+                this.modules.push(new Module(i, x, y));
+            }
+        }
+        
+        getTargetPositions(shape) {
+            const positions = [];
+            const gridSize = this.gridSize;
+            
+            switch(shape) {
+                case 'line':
+                    // Horizontal line in the middle
+                    for (let i = 0; i < this.numModules; i++) {
+                        const x = i % gridSize;
+                        const y = Math.floor(gridSize / 2);
+                        positions.push({x, y});
+                    }
+                    break;
+                    
+                case 'square':
+                    // Form a square shape
+                    const side = Math.ceil(Math.sqrt(this.numModules));
+                    for (let i = 0; i < this.numModules; i++) {
+                        const x = i % side;
+                        const y = Math.floor(i / side);
+                        positions.push({x, y});
+                    }
+                    break;
+                    
+                case 'rectangle':
+                    // Form a rectangle (2 rows)
+                    const cols = Math.ceil(this.numModules / 2);
+                    for (let i = 0; i < this.numModules; i++) {
+                        const x = i % cols;
+                        const y = Math.floor(i / cols);
+                        positions.push({x, y});
+                    }
+                    break;
+                    
+                default:
+                    // Random positions
+                    for (let i = 0; i < this.numModules; i++) {
+                        positions.push({
+                            x: Math.floor(Math.random() * gridSize),
+                            y: Math.floor(Math.random() * gridSize)
+                        });
+                    }
+            }
+            
+            return positions;
+        }
+        
+        reconfigure(shape) {
+            const targetPositions = this.getTargetPositions(shape);
+            
+            // Assign each module to a target position
+            for (let i = 0; i < this.modules.length; i++) {
+                const module = this.modules[i];
+                const target = targetPositions[i % targetPositions.length];
+                module.moveTo(target.x, target.y);
+            }
+            
+            return true;
+        }
+        
+        reset() {
+            // Reset to initial random positions
+            const positions = [];
+            for (let i = 0; i < this.numModules; i++) {
+                let x, y;
+                do {
+                    x = Math.floor(Math.random() * this.gridSize);
+                    y = Math.floor(Math.random() * this.gridSize);
+                } while (positions.some(pos => pos.x === x && pos.y === y));
+                
+                positions.push({x, y});
+                this.modules[i].moveTo(x, y);
+            }
+        }
+        
+        update() {
+            let anyMoving = false;
+            this.modules.forEach(module => {
+                if (module.updatePosition()) {
+                    anyMoving = true;
+                }
+            });
+            return anyMoving;
+        }
+    }
+    
+    // Demo Visualization
+    class DemoVisualization {
+        constructor() {
+            this.robot = new ModularRobot(9);
+            this.demoGrid = document.getElementById('demoGrid');
+            this.heroGrid = document.getElementById('heroGrid');
+            this.statusIndicator = document.getElementById('statusIndicator');
+            this.moduleTags = document.getElementById('moduleTags');
+            this.isAnimating = false;
+            
+            this.initializeGrids();
+            this.setupEventListeners();
+            this.renderModuleTags();
+            this.startAnimationLoop();
+        }
+        
+        initializeGrids() {
+            // Clear grids
+            this.demoGrid.innerHTML = '';
+            this.heroGrid.innerHTML = '';
+            
+            // Create demo grid cells
+            for (let row = 0; row < 6; row++) {
+                for (let col = 0; col < 6; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'demo-cell';
+                    cell.dataset.x = col;
+                    cell.dataset.y = row;
+                    this.demoGrid.appendChild(cell);
+                }
+            }
+            
+            // Create hero grid cells (5x5 for hero section)
+            for (let row = 0; row < 5; row++) {
+                for (let col = 0; col < 5; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'grid-cell';
+                    this.heroGrid.appendChild(cell);
+                }
+            }
+            
+            this.updateGrids();
+        }
+        
+        setupEventListeners() {
+            // Demo buttons
+            document.getElementById('btnLine').addEventListener('click', () => {
+                if (!this.isAnimating) {
+                    this.robot.reconfigure('line');
+                    this.isAnimating = true;
+                    this.statusIndicator.style.backgroundColor = '#f59e0b';
+                }
+            });
+            
+            document.getElementById('btnSquare').addEventListener('click', () => {
+                if (!this.isAnimating) {
+                    this.robot.reconfigure('square');
+                    this.isAnimating = true;
+                    this.statusIndicator.style.backgroundColor = '#f59e0b';
+                }
+            });
+            
+            document.getElementById('btnRectangle').addEventListener('click', () => {
+                if (!this.isAnimating) {
+                    this.robot.reconfigure('rectangle');
+                    this.isAnimating = true;
+                    this.statusIndicator.style.backgroundColor = '#f59e0b';
+                }
+            });
+            
+            document.getElementById('btnReset').addEventListener('click', () => {
+                if (!this.isAnimating) {
+                    this.robot.reset();
+                    this.isAnimating = true;
+                    this.statusIndicator.style.backgroundColor = '#f59e0b';
+                }
+            });
+        }
+        
+        renderModuleTags() {
+            this.moduleTags.innerHTML = '';
+            this.robot.modules.forEach(module => {
+                const tag = document.createElement('div');
+                tag.className = 'module-tag';
+                tag.textContent = module.id;
+                tag.style.backgroundColor = module.color;
+                this.moduleTags.appendChild(tag);
+            });
+        }
+        
+        updateGrids() {
+            // Clear all cells
+            document.querySelectorAll('.demo-cell').forEach(cell => {
+                cell.className = 'demo-cell';
+                cell.textContent = '';
+                cell.style.backgroundColor = '';
+            });
+            
+            document.querySelectorAll('.grid-cell').forEach(cell => {
+                cell.className = 'grid-cell';
+            });
+            
+            // Update demo grid with modules
+            this.robot.modules.forEach(module => {
+                const cellIndex = module.y * 6 + module.x;
+                const cells = document.querySelectorAll('.demo-cell');
+                
+                if (cells[cellIndex]) {
+                    cells[cellIndex].className = 'demo-cell module';
+                    cells[cellIndex].style.backgroundColor = module.color;
+                    cells[cellIndex].textContent = module.id;
+                }
+            });
+            
+            // Update hero grid (simpler visualization)
+            // For hero, we'll show a subset or different arrangement
+            const heroModules = this.robot.modules.slice(0, 5);
+            heroModules.forEach((module, index) => {
+                // Map to hero grid (5x5)
+                const heroX = index % 5;
+                const heroY = Math.floor(index / 5);
+                const heroCellIndex = heroY * 5 + heroX;
+                const heroCells = document.querySelectorAll('.grid-cell');
+                
+                if (heroCells[heroCellIndex]) {
+                    heroCells[heroCellIndex].className = 'grid-cell active';
+                    heroCells[heroCellIndex].style.backgroundColor = module.color;
+                }
+            });
+        }
+        
+        startAnimationLoop() {
+            const animate = () => {
+                if (this.isAnimating) {
+                    const stillMoving = this.robot.update();
+                    
+                    if (!stillMoving) {
+                        this.isAnimating = false;
+                        this.statusIndicator.style.backgroundColor = '#10b981';
+                    }
+                    
+                    this.updateGrids();
+                }
+                
+                requestAnimationFrame(animate);
+            };
+            
+            animate();
+        }
+    }
+    
+    // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
-            const targetId = this.getAttribute('href');
             
+            const targetId = this.getAttribute('href');
             if (targetId === '#') return;
             
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
-                // Close mobile menu if open
-                navLinks.classList.remove('active');
-                if (menuToggle) {
-                    menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-                }
-                
-                // Calculate offset for fixed navbar
-                const navbarHeight = document.querySelector('.navbar').offsetHeight;
-                const targetPosition = targetElement.offsetTop - navbarHeight - 20;
-                
-                // Smooth scroll
                 window.scrollTo({
-                    top: targetPosition,
+                    top: targetElement.offsetTop - 80,
                     behavior: 'smooth'
                 });
             }
         });
     });
     
-    // ========== CODE PREVIEW INTERACTIVITY ==========
-    const codePreview = document.querySelector('.code-preview');
-    if (codePreview) {
-        codePreview.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
-            this.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.4)';
-        });
-        
-        codePreview.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-            this.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.3)';
-        });
-        
-        // Add click to copy functionality
-        codePreview.addEventListener('click', function() {
-            const code = this.querySelector('code');
-            if (code) {
-                const text = code.textContent;
-                navigator.clipboard.writeText(text)
-                    .then(() => showNotification('Code copied to clipboard!', 'success'))
-                    .catch(() => showNotification('Failed to copy code', 'error'));
-            }
-        });
-    }
+    // Initialize the demo visualization
+    const demo = new DemoVisualization();
     
-    // ========== STATISTICS COUNTER ANIMATION ==========
-    function initStatisticsCounters() {
-        const statNumbers = document.querySelectorAll('.stat-number');
-        
-        statNumbers.forEach(stat => {
-            const originalText = stat.textContent;
-            const hasPlus = originalText.includes('+');
-            const target = parseInt(originalText);
-            
-            if (!isNaN(target)) {
-                // Reset for animation
-                stat.textContent = '0' + (hasPlus ? '+' : '');
-                
-                // Start counter when in view
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            animateCounter(stat, target, hasPlus);
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { 
-                    threshold: 0.5,
-                    rootMargin: '0px 0px -100px 0px'
-                });
-                
-                observer.observe(stat.closest('.stat-card, .stat-item'));
-            }
-        });
-    }
-    
-    function animateCounter(element, target, hasPlus) {
-        let current = 0;
-        const increment = target / 30; // 30 steps
-        const duration = 1500; // 1.5 seconds
-        
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                current = target;
-                clearInterval(timer);
-            }
-            element.textContent = Math.round(current) + (hasPlus ? '+' : '');
-        }, duration / 30);
-    }
-    
-    // ========== NOTIFICATION SYSTEM ==========
-    function showNotification(message, type = 'info') {
-        // Remove existing notifications
-        const existingNotifications = document.querySelectorAll('.notification');
-        existingNotifications.forEach(notification => {
-            notification.remove();
-        });
-        
-        // Create notification
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        
-        const icons = {
-            success: 'fa-check-circle',
-            error: 'fa-exclamation-circle',
-            info: 'fa-info-circle',
-            warning: 'fa-exclamation-triangle'
-        };
-        
-        notification.innerHTML = `
-            <div class="notification-content">
-                <i class="fas ${icons[type] || 'fa-info-circle'}"></i>
-                <span>${message}</span>
-            </div>
-            <button class="notification-close">
-                <i class="fas fa-times"></i>
-            </button>
-        `;
-        
-        // Add to DOM
-        document.body.appendChild(notification);
-        
-        // Show notification
-        setTimeout(() => {
-            notification.classList.add('show');
-        }, 10);
-        
-        // Auto remove after 5 seconds
-        const autoRemove = setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.remove();
-                }
-            }, 300);
-        }, 5000);
-        
-        // Close button
-        const closeBtn = notification.querySelector('.notification-close');
-        closeBtn.addEventListener('click', () => {
-            clearTimeout(autoRemove);
-            notification.classList.remove('show');
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.remove();
-                }
-            }, 300);
-        });
-    }
-    
-    // ========== HOVER ANIMATIONS ==========
-    function initHoverAnimations() {
-        // Team cards
-        const teamCards = document.querySelectorAll('.team-card');
-        teamCards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-15px)';
-                this.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.15)';
-                
-                // Animate initials
-                const initials = this.querySelector('.initials');
-                if (initials) {
-                    initials.style.transform = 'scale(1.1) rotate(5deg)';
-                    initials.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
-                }
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-                this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.08)';
-                
-                // Reset initials
-                const initials = this.querySelector('.initials');
-                if (initials) {
-                    initials.style.transform = 'scale(1) rotate(0)';
-                    initials.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
-                }
-            });
-        });
-        
-        // Feature cards
-        const featureCards = document.querySelectorAll('.feature-card, .app-card, .thinking-card, .detail-card, .module-card, .algorithm-card');
-        featureCards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-8px)';
-                this.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.12)';
-                
-                const icon = this.querySelector('i');
-                if (icon) {
-                    icon.style.transform = 'scale(1.2) rotate(10deg)';
-                    icon.style.color = 'var(--primary-dark)';
-                }
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-                this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.05)';
-                
-                const icon = this.querySelector('i');
-                if (icon) {
-                    icon.style.transform = 'scale(1) rotate(0)';
-                    icon.style.color = '';
-                }
-            });
-        });
-        
-        // Code syntax highlighting on hover
-        const codeBlocks = document.querySelectorAll('pre code');
-        codeBlocks.forEach(code => {
-            const parent = code.closest('.code-preview, .shape-algo');
-            if (parent) {
-                parent.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-5px)';
-                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
-                });
-                
-                parent.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                    this.style.boxShadow = '';
-                });
-            }
-        });
-    }
-    
-    // ========== ACTIVE NAV LINK HIGHLIGHTING ==========
-    function initActiveNavHighlight() {
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.nav-links a');
-        
-        function highlightNavLink() {
-            let current = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                const navbarHeight = document.querySelector('.navbar').offsetHeight;
-                
-                if (window.scrollY >= (sectionTop - navbarHeight - 100)) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
-                }
-            });
-        }
-        
-        window.addEventListener('scroll', highlightNavLink);
-        highlightNavLink(); // Initial call
-    }
-    
-    // ========== SCROLL PROGRESS INDICATOR ==========
-    function initScrollProgress() {
-        const progressBar = document.createElement('div');
-        progressBar.className = 'scroll-progress';
-        progressBar.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            width: 0%;
-            z-index: 9999;
-            transition: width 0.1s ease;
-        `;
-        document.body.appendChild(progressBar);
-        
-        window.addEventListener('scroll', () => {
-            const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrolled = (window.scrollY / windowHeight) * 100;
-            progressBar.style.width = scrolled + '%';
-        });
-    }
-    
-    // ========== SECTION REVEAL ANIMATIONS ==========
-    function initSectionReveal() {
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                }
-            });
-        }, observerOptions);
-        
-        // Observe all sections
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
-    }
-    
-    // ========== SKILL TAGS ANIMATION ==========
-    function initSkillTagsAnimation() {
-        const skillTags = document.querySelectorAll('.team-skills span, .tech-tags span');
-        
-        skillTags.forEach(tag => {
-            tag.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.1) translateY(-3px)';
-                this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
-                this.style.background = 'linear-gradient(135deg, var(--primary), var(--primary-dark))';
-                this.style.color = 'white';
-            });
-            
-            tag.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1) translateY(0)';
-                this.style.boxShadow = '';
-                this.style.background = '';
-                this.style.color = '';
-            });
-        });
-    }
-    
-    // ========== INITIALIZE ALL FEATURES ==========
-    function initializeAllFeatures() {
-        initStatisticsCounters();
-        initHoverAnimations();
-        initActiveNavHighlight();
-        initScrollProgress();
-        initSectionReveal();
-        initSkillTagsAnimation();
-        
-        // Add CSS animations
-        addCSSAnimations();
-        
-        // Show welcome message
-        setTimeout(() => {
-            console.log('All features initialized successfully!');
-        }, 1000);
-    }
-    
-    function addCSSAnimations() {
-        // Add keyframes for animations
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            
-            @keyframes pulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-                100% { transform: scale(1); }
-            }
-            
-            @keyframes float {
-                0%, 100% { transform: translateY(0); }
-                50% { transform: translateY(-10px); }
-            }
-            
-            @keyframes gradientShift {
-                0% { background-position: 0% 50%; }
-                50% { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
-            }
-            
-            .notification {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: white;
-                padding: 15px 20px;
-                border-radius: 10px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-                display: flex;
-                align-items: center;
-                gap: 15px;
-                z-index: 9999;
-                transform: translateX(100%);
-                opacity: 0;
-                transition: all 0.3s ease;
-                max-width: 400px;
-            }
-            
-            .notification.show {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            
-            .notification-success {
-                border-left: 4px solid var(--success);
-            }
-            
-            .notification-error {
-                border-left: 4px solid var(--danger);
-            }
-            
-            .notification-info {
-                border-left: 4px solid var(--primary);
-            }
-            
-            .notification-warning {
-                border-left: 4px solid var(--warning);
-            }
-            
-            .notification-content {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                flex: 1;
-            }
-            
-            .notification-content i {
-                font-size: 1.2rem;
-            }
-            
-            .notification-success .notification-content i {
-                color: var(--success);
-            }
-            
-            .notification-error .notification-content i {
-                color: var(--danger);
-            }
-            
-            .notification-info .notification-content i {
-                color: var(--primary);
-            }
-            
-            .notification-warning .notification-content i {
-                color: var(--warning);
-            }
-            
-            .notification-close {
-                background: none;
-                border: none;
-                color: var(--gray-dark);
-                cursor: pointer;
-                padding: 5px;
-                font-size: 0.9rem;
-                transition: color 0.3s;
-            }
-            
-            .notification-close:hover {
-                color: var(--dark);
-            }
-            
-            .nav-links a.active {
-                color: var(--primary) !important;
-                background: rgba(74, 144, 226, 0.1) !important;
-                font-weight: 600 !important;
-            }
-            
-            /* Section reveal animation */
-            section:not(.hero) {
-                opacity: 0;
-                transform: translateY(20px);
-                transition: all 0.6s ease;
-            }
-            
-            section.revealed {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            
-            /* Stagger animation for cards */
-            section.revealed .team-card,
-            section.revealed .feature-card,
-            section.revealed .app-card,
-            section.revealed .thinking-card,
-            section.revealed .detail-card,
-            section.revealed .module-card,
-            section.revealed .algorithm-card {
-                animation: fadeInUp 0.6s ease forwards;
-            }
-            
-            /* Delay animations for grid items */
-            section.revealed .team-card:nth-child(1) { animation-delay: 0.1s; }
-            section.revealed .team-card:nth-child(2) { animation-delay: 0.2s; }
-            section.revealed .team-card:nth-child(3) { animation-delay: 0.3s; }
-            section.revealed .team-card:nth-child(4) { animation-delay: 0.4s; }
-            section.revealed .team-card:nth-child(5) { animation-delay: 0.5s; }
-            
-            section.revealed .feature-card:nth-child(1),
-            section.revealed .app-card:nth-child(1),
-            section.revealed .detail-card:nth-child(1),
-            section.revealed .module-card:nth-child(1) { animation-delay: 0.1s; }
-            
-            section.revealed .feature-card:nth-child(2),
-            section.revealed .app-card:nth-child(2),
-            section.revealed .detail-card:nth-child(2),
-            section.revealed .module-card:nth-child(2) { animation-delay: 0.2s; }
-            
-            section.revealed .feature-card:nth-child(3),
-            section.revealed .app-card:nth-child(3),
-            section.revealed .detail-card:nth-child(3),
-            section.revealed .module-card:nth-child(3) { animation-delay: 0.3s; }
-            
-            section.revealed .feature-card:nth-child(4),
-            section.revealed .app-card:nth-child(4),
-            section.revealed .detail-card:nth-child(4),
-            section.revealed .module-card:nth-child(4) { animation-delay: 0.4s; }
-            
-            /* Code preview animation */
-            .code-preview {
-                animation: float 3s ease-in-out infinite;
-            }
-            
-            /* Hero title gradient animation */
-            .hero-title {
-                background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--secondary));
-                background-size: 200% 200%;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                animation: gradientShift 3s ease infinite;
-            }
-        `;
-        document.head.appendChild(style);
-    }
-    
-    // ========== PERFORMANCE OPTIMIZATION ==========
-    // Debounce scroll events
-    let scrollTimeout;
+    // Add scroll effect to navbar
     window.addEventListener('scroll', function() {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            // Perform scroll-related operations
-        }, 100);
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 100) {
+            navbar.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+            navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+        } else {
+            navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
+            navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+        }
     });
     
-    // Lazy load images (if any)
-    if ('IntersectionObserver' in window) {
-        const imageObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    if (img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.classList.add('loaded');
-                        imageObserver.unobserve(img);
-                    }
-                }
-            });
+    // Add hover effect to grid cells in demo
+    document.addEventListener('mouseover', function(e) {
+        if (e.target.classList.contains('demo-cell') && e.target.classList.contains('module')) {
+            e.target.style.transform = 'scale(1.1)';
+            e.target.style.zIndex = '10';
+        }
+    });
+    
+    document.addEventListener('mouseout', function(e) {
+        if (e.target.classList.contains('demo-cell') && e.target.classList.contains('module')) {
+            e.target.style.transform = 'scale(1.05)';
+            e.target.style.zIndex = '';
+        }
+    });
+    
+    // Initialize with a random configuration in hero section
+    function animateHeroSection() {
+        const heroCells = document.querySelectorAll('.grid-cell');
+        heroCells.forEach(cell => {
+            cell.classList.remove('active');
         });
         
-        document.querySelectorAll('img[data-src]').forEach(img => {
-            imageObserver.observe(img);
-        });
+        // Randomly activate some cells
+        const activeCount = Math.floor(Math.random() * 5) + 3;
+        for (let i = 0; i < activeCount; i++) {
+            const randomIndex = Math.floor(Math.random() * heroCells.length);
+            heroCells[randomIndex].classList.add('active');
+            
+            // Random color for hero cells
+            const colors = ['#2563eb', '#10b981', '#8b5cf6', '#f59e0b', '#0ea5e9'];
+            heroCells[randomIndex].style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        }
     }
     
-    // ========== INITIALIZE EVERYTHING ==========
-    initializeAllFeatures();
+    // Change hero animation every 3 seconds
+    setInterval(animateHeroSection, 3000);
     
-    // ========== UTILITY FUNCTIONS ==========
-    window.copyToClipboard = function(text) {
-        navigator.clipboard.writeText(text)
-            .then(() => showNotification('Copied to clipboard!', 'success'))
-            .catch(() => showNotification('Failed to copy', 'error'));
-    };
-    
-    // ========== DEBUG MODE ==========
-    // Enable debug mode with ?debug in URL
-    if (window.location.search.includes('debug')) {
-        console.log('Debug mode enabled');
-        document.body.classList.add('debug-mode');
-        
-        // Add debug panel
-        const debugPanel = document.createElement('div');
-        debugPanel.className = 'debug-panel';
-        debugPanel.innerHTML = `
-            <h4>Debug Panel</h4>
-            <button onclick="showNotification('Test notification', 'success')">Test Success</button>
-            <button onclick="showNotification('Test error', 'error')">Test Error</button>
-            <button onclick="location.reload()">Reload</button>
-            <button onclick="copyToClipboard('Sample text')">Copy Sample</button>
-        `;
-        document.body.appendChild(debugPanel);
-    }
-    
-    // ========== LOADING INDICATOR ==========
-    // Show loading indicator on page load
-    window.addEventListener('load', function() {
-        document.body.classList.add('loaded');
-        
-        // Remove loading indicator
-        const loader = document.getElementById('page-loader');
-        if (loader) {
-            setTimeout(() => {
-                loader.style.opacity = '0';
-                setTimeout(() => {
-                    loader.remove();
-                }, 300);
-            }, 500);
-        }
-        
-        // Show welcome notification
-        setTimeout(() => {
-            showNotification('Welcome to Robotics Simulation Portfolio!', 'info');
-        }, 1000);
-    });
-    
-    // ========== KEYBOARD SHORTCUTS ==========
-    document.addEventListener('keydown', function(e) {
-        // Ctrl/Cmd + / to show debug panel
-        if ((e.ctrlKey || e.metaKey) && e.key === '/') {
-            e.preventDefault();
-            showNotification('Debug shortcuts enabled. Use ?debug in URL for panel.', 'info');
-        }
-        
-        // Escape to close notifications
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.notification').forEach(notification => {
-                notification.classList.remove('show');
-                setTimeout(() => notification.remove(), 300);
-            });
-        }
-    });
+    // Initial hero animation
+    setTimeout(animateHeroSection, 500);
 });
